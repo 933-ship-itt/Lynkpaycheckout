@@ -4,18 +4,21 @@
   <meta charset="utf-8">
   <title>Redirecting...</title>
   <script type="text/javascript">
-    // Get the current path from the URL
-    var path = window.location.pathname;
-    // Construct the new URL to redirect to the main page with the same path
-    var redirectUrl = window.location.origin + path;
-    // Redirect the user
-    window.location.replace(redirectUrl);
+    // Check if we are in a redirect loop
+    if (sessionStorage.getItem('redirecting') === 'true') {
+      // We are in a loop, so clear the flag and let the 404 page show
+      sessionStorage.removeItem('redirecting');
+    } else {
+      // Set the flag to prevent the next redirect
+      sessionStorage.setItem('redirecting', 'true');
+      // Get the current path from the URL
+      var path = window.location.pathname;
+      // Redirect to the new URL
+      window.location.replace(window.location.origin + '/Lynkpaycheckout' + path);
+    }
   </script>
 </head>
 <body>
-  <p>Redirecting to <a id="redirect-link">...</a></p>
-  <script>
-    document.getElementById('redirect-link').href = window.location.href;
-  </script>
+  <p>Redirecting to the correct page...</p>
 </body>
 </html>
